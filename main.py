@@ -12,8 +12,8 @@ from zoom import Zoom
 logging.disable(logging.CRITICAL)
 
 
-async def spam(meeting_id: int, password: str, username: str, message: str):
-    zoom = Zoom(username)
+async def spam(meeting_id: int, password: str, username: str, message: str, url: str):
+    zoom = Zoom(url, username)
     meeting = await zoom.join_meeting(meeting_id, password)
 
     async with meeting as websocket:
@@ -53,7 +53,7 @@ async def main():
     while True:
         try:
             joins = {
-                spam(int(meeting_id), password, username, message)
+                spam(int(meeting_id), password, username, message, url)
                 for _ in range(1, bot_count)
             }
             await asyncio.gather(*joins)
