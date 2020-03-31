@@ -26,7 +26,7 @@
      ```
     <h3>Для Linux</h3>
 
-  Просто вбивайте команды в терминал
+    Просто вбивайте команды в терминал
 
 2. Введите следующие команды ([куда?](http://comp-profi.com/kak-vyzvat-komandnuyu-stroku-ili-konsol-windows/)):
 
