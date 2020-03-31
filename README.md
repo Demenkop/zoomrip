@@ -19,7 +19,7 @@ zoomrip - бесплатная утилита с открытым исходны
 
     <h3>Для Android</h3>
 
-    Установите приложение [Termux](https://play.google.com/store/apps/details?id=com.termux), запустите его и введите следующие команды поочерёдно:
+    Установите приложение [Termux](https://play.google.com/store/apps/details?id=com.termux), запустите его и введите следующую команду:
      ```sh
      pkg install python
      ```
