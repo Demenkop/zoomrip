@@ -8,9 +8,9 @@ from constants import auth_re, ts_re
 
 
 class Zoom:
-    def __init__(self, username: str):
+    def __init__(self, url, username: str):
         self.username = username
-        self.host = "https://us04web.zoom.us"  # I don't know if they can differ
+        self.host = "/".join(url.split("/")[:3])  # I don't know if they can differ
 
         self.client = httpx.AsyncClient(verify=False)
 

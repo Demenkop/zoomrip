@@ -13,7 +13,7 @@ logging.disable(logging.CRITICAL)
 
 
 async def spam(meeting_id: int, password: str, username: str, message: str):
-    zoom = Zoom(username)
+    zoom = Zoom("https://us04web.zoom.us", username)
     meeting = await zoom.join_meeting(meeting_id, password)
 
     async with meeting as websocket:
