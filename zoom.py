@@ -16,11 +16,11 @@ class Zoom:
         self.host = "/".join(url.split("/")[:3])
 
         self.client = httpx.AsyncClient(verify=False)
+        logger.enable("zoomrip")
 
     async def join_meeting(
         self, meeting_id: int, password: Optional[str] = ""
     ) -> Optional[websockets.client.Connect]:
-        logger.enable("zoomrip")
         logger.debug("Joining a meeting")
         self.client.cookies.set("wc_join", f"{meeting_id}*{self.username}")
         self.client.cookies.set("wc_dn", self.username)
@@ -52,8 +52,7 @@ class Zoom:
         if ">Meeting password is wrong. Please re-enter." not in join_request.text:
             return join_request.text
         else:
-            logger.error("Wrong password")
-            raise WrongPasswordError("Wrong password")
+            return None
 
     async def _find_best_server(self, meeting_id: int) -> dict:
         best_server = await self.client.get(
