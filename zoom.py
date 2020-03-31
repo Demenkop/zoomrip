@@ -5,30 +5,38 @@ import httpx
 import websockets
 
 from constants import auth_re, ts_re
+from exceptions import WrongPasswordError
+
+from loguru import logger
 
 
 class Zoom:
     def __init__(self, url, username: str):
         self.username = username
-        self.host = "/".join(url.split("/")[:3])  # I don't know if they can differ
+        self.host = "/".join(url.split("/")[:3])
 
         self.client = httpx.AsyncClient(verify=False)
 
     async def join_meeting(
         self, meeting_id: int, password: Optional[str] = ""
     ) -> Optional[websockets.client.Connect]:
+        logger.enable("zoomrip")
+        logger.debug("Joining a meeting")
         self.client.cookies.set("wc_join", f"{meeting_id}*{self.username}")
         self.client.cookies.set("wc_dn", self.username)
 
         configuration = await self._get_configuration(meeting_id, password)
 
         if configuration is None:
-            return  # Wrong password
+            logger.error("Wrong password")
+            raise WrongPasswordError("Wrong password")
 
         best_server = await self._find_best_server(meeting_id)
         connection = await self._connect(
             meeting_id, best_server, configuration, password
         )
+
+        logger.disable("zoomrip")
         return await self._websocket_connect(connection)
 
     async def _get_configuration(self, meeting_id: int, password: str) -> Optional[str]:
@@ -44,7 +52,8 @@ class Zoom:
         if ">Meeting password is wrong. Please re-enter." not in join_request.text:
             return join_request.text
         else:
-            return None
+            logger.error("Wrong password")
+            raise WrongPasswordError("Wrong password")
 
     async def _find_best_server(self, meeting_id: int) -> dict:
         best_server = await self.client.get(
