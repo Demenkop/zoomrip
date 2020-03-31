@@ -28,7 +28,7 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
 
 
 async def main():
-    url = input("Введите ссылку на конференцию Zoom: ")
+    url = input("Введите ссылку на конференцию Zoom: ").strip()
 
     username = input(
         "Введите юзернейм, который будет использован ботами (без русских букв): "
@@ -41,11 +41,11 @@ async def main():
         print("Неверная ссылка!")
         return
 
-    meeting_id = url_parsed[0][0]
-    if url_parsed[0][1] == "":
+    meeting_id = url_parsed[0][1]
+    if url_parsed[0][2] == "":
         password = ""
     else:
-        password = url_parsed[0][2]
+        password = url_parsed[0][3]
 
     spinner = Halo(text="", spinner="dots")
     spinner.start()
