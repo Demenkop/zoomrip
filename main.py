@@ -48,17 +48,14 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
                     except WrongPasswordError:
                         logger.warning("Server says wrong password, ignoring...")
                         continue
-                    except (ClosedResourceError, ConnectionClosed):
-                        logger.warning("asdasdasdasdasd")
-                        await trio.sleep(5)
-                        meeting = await zoom.join_meeting(meeting_id, password)
-                        pass
-        except (ClosedResourceError, ConnectionClosed):
-            logger.warning("asdasdasdasdasd")
-            await trio.sleep(5)
+                    except (ClosedResourceError, ConnectionClosed, AttributeError):
+                        logger.warning("Server closed connecting, trying again...")
+                        await trio.sleep(3)
+                        break
+        except (ClosedResourceError, ConnectionClosed, AttributeError):
+            logger.warning("Server closed connecting, trying again...")
+            await trio.sleep(3)
             pass
-
-
 
 
 async def main():
@@ -68,7 +65,7 @@ async def main():
         "Введите юзернейм, который будет использован ботами (без русских букв): "
     )
     bot_count = int(input("Введите количество ботов: "))
-    message = input("Введите сообщение, которое будут отправлять боты: ")
+    message = "𒐫𪚥𒈙á́́́́́́́́́́́́́́́́́́́́́́́́́́́́́" * 14
 
     url_parsed = re.findall(url_re, url)
     if len(url_parsed) == 0:
