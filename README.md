@@ -36,4 +36,5 @@ pip3 install -r requirements.txt
 Всё просто! Введите команду `python3 main.py`, находясь в директории склонированного репозитория.
 
 <h1 align="center">📹  Видео</h1>
-To be done.
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=nHr9_qiFVcM" target="_blank"><img src="http://img.youtube.com/vi/nHr9_qiFVcM/0.jpg" 
+alt="nHr9_qiFVcM" width="240" height="180" border="10" /></a>
