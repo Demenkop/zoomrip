@@ -3,7 +3,6 @@ import re
 from base64 import b64encode
 
 import trio
-from halo import Halo
 from loguru import logger
 from trio import ClosedResourceError
 from trio_websocket import ConnectionClosed
@@ -80,8 +79,6 @@ async def main():
 
     logger.debug(repr(url_parsed))
 
-    spinner = Halo(text="In progress...", spinner="dots")
-    spinner.start()
     async with trio.open_nursery() as nur:
         for i in range(1, bot_count + 1):
             nur.start_soon(

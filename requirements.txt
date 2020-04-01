@@ -1,6 +1,5 @@
 tenacity
 trio
-halo
 trio-websocket
 httpx
 loguru
