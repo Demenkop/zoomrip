@@ -23,14 +23,14 @@ class Zoom:
     @logger.catch
     @retry(stop=stop_after_attempt(5), sleep=trio.sleep)
     async def join_meeting(self, meeting_id: int, password: Optional[str] = ""):
-        logger.debug("Joining a meeting")
+        logger.debug(_("Joining a meeting"))
         self.client.cookies.set("wc_join", f"{meeting_id}*{self.username}")
         self.client.cookies.set("wc_dn", self.username)
 
         configuration = await self._get_configuration(meeting_id, password)
 
         if configuration is None:
-            raise WrongPasswordError("Wrong password")
+            raise WrongPasswordError(_("Wrong password"))
 
         best_server = await self._find_best_server(meeting_id)
         connection = await self._connect(
@@ -51,7 +51,7 @@ class Zoom:
             },
         )
         if ">The meeting has not started" in join_request.text:
-            raise MeetingHasNotStartedError("The meeting has not started")
+            raise MeetingHasNotStartedError(_("The meeting has not started"))
         if ">Meeting password is wrong. Please re-enter." not in join_request.text:
             return join_request.text
         else:
@@ -62,7 +62,7 @@ class Zoom:
         best_server = (
             await self.client.get(f"https://rwcff.zoom.us/wc/ping/{meeting_id}")
         ).json()
-        logger.debug(f"Best server: {best_server['rwg']}")
+        logger.debug(_("Best server: {server}"), server=best_server['rwg'])
         return best_server
 
     @logger.catch
@@ -75,7 +75,7 @@ class Zoom:
     ):
         auth, ts = self._extract_config_variables(configuration)
 
-        logger.debug(f"Auth: {auth}, TS: {ts}")
+        logger.debug("Auth: {auth}, TS: {ts}", auth=auth, ts=ts)
 
         return await self.client.get(
             f"https://{best_server['rwg']}/webclient/{meeting_id}",
@@ -92,7 +92,7 @@ class Zoom:
     @logger.catch
     async def _websocket_connect(connection):
         websocket_url = str(connection.url).replace("https", "wss")
-        logger.debug(f"WebSocket connection url: {websocket_url}")
+        logger.debug("WebSocket connection url: {websocket_url}", websocket_url=websocket_url)
         return open_websocket_url(websocket_url)
 
     @staticmethod
