@@ -1,4 +1,6 @@
+tenacity
+trio
 halo
-websockets
+trio-websocket
 httpx
 loguru

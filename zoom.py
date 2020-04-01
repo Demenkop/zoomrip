@@ -2,7 +2,10 @@ import re
 from typing import Optional, Tuple
 
 import httpx
-import websockets
+import trio
+from httpx import ConnectTimeout
+from tenacity import retry, stop_after_attempt
+from trio_websocket import open_websocket_url
 
 from constants import auth_re, ts_re
 from exceptions import WrongPasswordError
@@ -19,9 +22,10 @@ class Zoom:
         self.client = httpx.AsyncClient(verify=False)
 
     @logger.catch
+    @retry(stop=stop_after_attempt(5), sleep=trio.sleep)
     async def join_meeting(
         self, meeting_id: int, password: Optional[str] = ""
-    ) -> Optional[websockets.client.Connect]:
+    ):
         logger.debug("Joining a meeting")
         self.client.cookies.set("wc_join", f"{meeting_id}*{self.username}")
         self.client.cookies.set("wc_dn", self.username)
@@ -38,6 +42,7 @@ class Zoom:
         return await self._websocket_connect(connection)
 
     @logger.catch
+    @retry(stop=stop_after_attempt(5), sleep=trio.sleep)
     async def _get_configuration(self, meeting_id: int, password: str) -> Optional[str]:
         join_request = await self.client.get(
             f"{self.host}/wc/{meeting_id}/join",
@@ -46,7 +51,7 @@ class Zoom:
                 "track_id": "",
                 "jmf_code": "",
                 "meeting_result": "",
-            },
+            }
         )
         if ">Meeting password is wrong. Please re-enter." not in join_request.text:
             return join_request.text
@@ -86,9 +91,9 @@ class Zoom:
 
     @staticmethod
     @logger.catch
-    async def _websocket_connect(connection) -> websockets.client.Connect:
+    async def _websocket_connect(connection):
         logger.debug(f"WebSocket connection url: {str(connection.url)}")
-        return websockets.connect(str(connection.url).replace("https", "wss"))
+        return open_websocket_url(str(connection.url).replace("https", "wss"))
 
     @staticmethod
     @logger.catch
