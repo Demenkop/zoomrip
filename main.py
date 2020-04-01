@@ -39,6 +39,7 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
     """
     zoom = Zoom(url, username)
     logger.debug(_("Joining meeting {meeting_id} with password {password}"), meeting_id=meeting_id, password=password)
+
     while True:
         try:
             meeting = await zoom.join_meeting(meeting_id, password)
@@ -90,8 +91,6 @@ async def main():
         password = password or ""
     else:
         password = url_parsed[0][3]
-
-    logger.debug(repr(url_parsed))
 
     async with trio.open_nursery() as nur:
         for i in range(1, bot_count + 1):
