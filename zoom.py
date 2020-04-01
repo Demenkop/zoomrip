@@ -2,6 +2,7 @@ import re
 from typing import Optional, Tuple
 
 import httpx
+import trio
 from httpx import ConnectTimeout
 from tenacity import retry, stop_after_attempt
 from trio_websocket import open_websocket_url
@@ -21,7 +22,7 @@ class Zoom:
         self.client = httpx.AsyncClient(verify=False)
 
     @logger.catch
-    @retry(stop=stop_after_attempt(5))
+    @retry(stop=stop_after_attempt(5), sleep=trio.sleep)
     async def join_meeting(
         self, meeting_id: int, password: Optional[str] = ""
     ):
@@ -41,7 +42,7 @@ class Zoom:
         return await self._websocket_connect(connection)
 
     @logger.catch
-    @retry(stop=stop_after_attempt(5))
+    @retry(stop=stop_after_attempt(5), sleep=trio.sleep)
     async def _get_configuration(self, meeting_id: int, password: str) -> Optional[str]:
         join_request = await self.client.get(
             f"{self.host}/wc/{meeting_id}/join",
