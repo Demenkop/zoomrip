@@ -16,6 +16,10 @@ zoomrip - бесплатная утилита с открытым исходны
     <h3>Для Windows</h3>
 
     Скачайте установщик с [официального сайта](https://www.python.org/downloads/) и запустите его. Убедитесь, что при установке отметили галочку ![Add Python to PATH](https://user-images.githubusercontent.com/42045258/69171091-557d2780-0b0c-11ea-8adf-7f819357f041.png)
+    
+    <h3>Для Linux</h3>
+
+    Скорее всего у вас уже установлен Python 3. Если это не так, следуйте [гайду](https://realpython.com/installing-python/#linux).
 
 2. Введите следующие команды ([куда?](http://comp-profi.com/kak-vyzvat-komandnuyu-stroku-ili-konsol-windows/)):
 
@@ -30,16 +34,14 @@ pip3 install -r requirements.txt
 
 <h1 align="center">Обновление</h1>
 
-1. Введите следующую команду в командную строку:
-
-    ```sh
-    rd zoomrip /S /Q
-    ```
-2. Повторите пункт 2 из инструкции по установке.
+Введите следующую команду в командную строку:
+```sh
+git pull
+```
 
 <h1 align="center">📹  Видео</h1>
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=nHr9_qiFVcM" target="_blank"><img src="http://img.youtube.com/vi/nHr9_qiFVcM/0.jpg" 
-alt="nHr9_qiFVcM" width="240" height="180" border="10" /></a>
+alt="nHr9_qiFVcM" width="384" height="216" border="10" /></a>
 
 ------------
 

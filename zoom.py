@@ -42,13 +42,7 @@ class Zoom:
     @retry(stop=stop_after_attempt(5), sleep=trio.sleep)
     async def _get_configuration(self, meeting_id: int, password: str) -> Optional[str]:
         join_request = await self.client.get(
-            f"{self.host}/wc/{meeting_id}/join",
-            params={
-                "pwd": password,
-                "track_id": "",
-                "jmf_code": "",
-                "meeting_result": "",
-            },
+            f"{self.host}/wc/{meeting_id}/join", params={"pwd": password,},
         )
         if ">The meeting has not started" in join_request.text:
             raise MeetingHasNotStartedError("The meeting has not started")

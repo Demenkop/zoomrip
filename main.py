@@ -15,18 +15,10 @@ logging.disable(logging.CRITICAL)
 logger.add("file_{time}.log", enqueue=True)
 
 
-async def spam(meeting_id: int, password: str, username: str, message: str, url: str):
-    """
-    Спамит сообщениями в чат
-
-    :param meeting_id: номер конференции
-    :param password: пароль конференции
-    :param username: ник бота
-    :param message: сообщение
-    :param url: ссылка на конференцию
-    """
+async def spam(meeting_id: int, password: str, username: str, message: str, url: str) -> None:
     zoom = Zoom(url, username)
-    logger.debug(f"Joining meeting {meeting_id} with password {password}")
+    logger.debug(f"Joining meeting {meeting_id} with password '{password}'")
+
     while True:
         try:
             meeting = await zoom.join_meeting(meeting_id, password)
@@ -76,8 +68,6 @@ async def main():
         password = password or ""
     else:
         password = url_parsed[0][3]
-
-    logger.debug(repr(url_parsed))
 
     async with trio.open_nursery() as nur:
         for i in range(1, bot_count + 1):
