@@ -5,18 +5,31 @@ import re
 from base64 import b64encode
 
 from halo import Halo
+from loguru import logger
 
 from constants import url_re
 from zoom import Zoom
 
 logging.disable(logging.CRITICAL)
+logger.add("file_{time}.log")
 
 
 async def spam(meeting_id: int, password: str, username: str, message: str, url: str):
+    """
+    Спамит сообщениями в чат
+
+    :param meeting_id: номер конфернции
+    :param password: пароль конфы
+    :param username: ник бота
+    :param message: сообщение
+    :param url: ссылка на конференцию
+    """
     zoom = Zoom(url, username)
+    logger.debug(f"Joining conference {meeting_id} with password {password}")
     meeting = await zoom.join_meeting(meeting_id, password)
 
     async with meeting as websocket:
+        logger.info(f"{username}: Started sending messages...")
         while True:
             await websocket.recv()
             text = b64encode(message.encode()).decode()
@@ -47,14 +60,17 @@ async def main():
     else:
         password = url_parsed[0][3]
 
-    spinner = Halo(text="", spinner="dots")
+    logger.debug(repr(url_parsed))
+    logger.info(f"password: {password}")
+
+    spinner = Halo(text="бомбим...", spinner="dots")
     spinner.start()
 
     while True:
         try:
             joins = {
-                spam(int(meeting_id), password, username, message, url)
-                for _ in range(1, bot_count)
+                spam(int(meeting_id), password, username + str(i), message, url)
+                for i in range(1, bot_count)
             }
             await asyncio.gather(*joins)
         except:
