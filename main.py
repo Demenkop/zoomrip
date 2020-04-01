@@ -62,11 +62,13 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
 
 
 async def main():
-    url = "https://us04web.zoom.us/j/796525648?pwd=M2FRRnByOUgzNXZQYlozWFFhZkQvZz09"
+    url = input("Введите ссылку на конференцию Zoom: ").strip()
 
-    username = "AXAXAXSSSSSS"
-    bot_count = 50
-    message = "AXAXAXAAXX"
+    username = input(
+        "Введите юзернейм, который будет использован ботами (без русских букв): "
+    )
+    bot_count = int(input("Введите количество ботов: "))
+    message = input("Введите сообщение, которое будут отправлять боты: ")
 
     url_parsed = re.findall(url_re, url)
     if len(url_parsed) == 0:
