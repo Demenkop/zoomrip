@@ -6,6 +6,7 @@ from base64 import b64encode
 import trio
 from halo import Halo
 from loguru import logger
+
 from trio import ClosedResourceError
 from trio_websocket import ConnectionClosed
 
@@ -29,7 +30,6 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
     """
     zoom = Zoom(url, username)
     logger.debug(f"Joining conference {meeting_id} with password {password}")
-
     while True:
         try:
             meeting = await zoom.join_meeting(meeting_id, password)
