@@ -64,7 +64,8 @@ async def main():
         "Введите имя, которое будут использовать боты (без русских букв): "
     )
     bot_count = int(input("Введите количество ботов: "))
-    message = "𒐫𪚥𒈙á́́́́́́́́́́́́́́́́́́́́́́́́́́́́́" * 14
+    message = "𒐫𪚥𒈙á́́́́́́́́́́́́́́́́́́́́́́́́́́́́́"
+    message = message * int(1024 / len(message))
 
     url_parsed = re.findall(url_re, url)
     if len(url_parsed) == 0:

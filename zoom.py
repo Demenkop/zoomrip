@@ -9,7 +9,7 @@ from tenacity import retry, stop_after_attempt
 from trio_websocket import open_websocket_url
 
 from constants import auth_re, ts_re
-from exceptions import WrongPasswordError
+from exceptions import WrongPasswordError, MeetingHasNotStartedError
 
 
 class Zoom:
@@ -50,10 +50,12 @@ class Zoom:
                 "meeting_result": "",
             },
         )
+        if ">The meeting has not started" in join_request.text:
+            raise MeetingHasNotStartedError("The meeting has not started")
         if ">Meeting password is wrong. Please re-enter." not in join_request.text:
             return join_request.text
         else:
-            raise WrongPasswordError("Wrong meeting password")
+            return None
 
     @logger.catch
     async def _find_best_server(self, meeting_id: int) -> dict:
@@ -89,8 +91,9 @@ class Zoom:
     @staticmethod
     @logger.catch
     async def _websocket_connect(connection):
-        logger.debug(f"WebSocket connection url: {str(connection.url)}")
-        return open_websocket_url(str(connection.url).replace("https", "wss"))
+        websocket_url = str(connection.url).replace("https", "wss")
+        logger.debug(f"WebSocket connection url: {websocket_url}")
+        return open_websocket_url(websocket_url)
 
     @staticmethod
     @logger.catch
@@ -101,5 +104,5 @@ class Zoom:
 
     @staticmethod
     @logger.catch
-    def create_payload(event_id: int, body: dict):
+    def create_payload(event_id: int, body: dict) -> str:
         return json.dumps({"evt": event_id, "body": body, "seq": 0,})

@@ -40,3 +40,7 @@ pip3 install -r requirements.txt
 <h1 align="center">📹  Видео</h1>
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=nHr9_qiFVcM" target="_blank"><img src="http://img.youtube.com/vi/nHr9_qiFVcM/0.jpg" 
 alt="nHr9_qiFVcM" width="240" height="180" border="10" /></a>
+
+------------
+
+<p align="center">Чат в Telegram: <a href="https://t.me/zoomraid">https://t.me/zoomraid</a></p>
