@@ -17,11 +17,12 @@ from zoom import Zoom
 logging.disable(logging.CRITICAL)
 logger.add("file_{time}.log", enqueue=True)
 
-if sys.platform.startswith('win'):
+if sys.platform.startswith("win"):
     import locale
-    if os.getenv('LANG') is None:
+
+    if os.getenv("LANG") is None:
         lang, enc = locale.getdefaultlocale()
-        os.environ['LANG'] = lang
+        os.environ["LANG"] = lang
 
 gettext.install("zoomrip", "./locale")
 
@@ -38,14 +39,20 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
     :param url: ссылка на конференцию
     """
     zoom = Zoom(url, username)
-    logger.debug(_("Joining meeting {meeting_id} with password {password}"), meeting_id=meeting_id, password=password)
+    logger.debug(
+        _("Joining meeting {meeting_id} with password {password}"),
+        meeting_id=meeting_id,
+        password=password,
+    )
 
     while True:
         try:
             meeting = await zoom.join_meeting(meeting_id, password)
 
             async with meeting as ws:
-                logger.info(_("{username}: Started sending messages..."), username=username)
+                logger.info(
+                    _("{username}: Started sending messages..."), username=username
+                )
                 while True:
                     try:
                         await ws.get_message()
@@ -70,12 +77,12 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
 async def main():
     url = input(_("Enter zoom meeting link: ")).strip()
     password = input(
-        _("Enter a meeting password, if there is any and it's not specified in the url (or press Enter): ")
+        _(
+            "Enter a meeting password, if there is any and it's not specified in the url (or press Enter): "
+        )
     ).strip()
 
-    username = input(
-        _("Enter a name that bots will use (English only): ")
-    )
+    username = input(_("Enter a name that bots will use (English only): "))
 
     bot_count = int(input(_("Enter the amount of bots: ")))
     message = "𒐫𪚥𒈙á́́́́́́́́́́́́́́́́́́́́́́́́́́́́́"

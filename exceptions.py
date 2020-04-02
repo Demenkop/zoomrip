@@ -1,6 +1,10 @@
-class WrongPasswordError(Exception):
+class ZoomError(Exception):
     pass
 
 
-class MeetingHasNotStartedError(Exception):
+class WrongPasswordError(ZoomError):
+    pass
+
+
+class MeetingHasNotStartedError(ZoomError):
     pass
