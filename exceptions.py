@@ -1,4 +1,4 @@
-class ZoomError(Exception):
+class ZoomError(Exception): 
     pass
 
 

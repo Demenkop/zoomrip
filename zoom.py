@@ -56,7 +56,7 @@ class Zoom:
         best_server = (
             await self.client.get(f"https://rwcff.zoom.us/wc/ping/{meeting_id}")
         ).json()
-        logger.debug(_("Best server: {server}"), server=best_server["rwg"])
+        logger.debug(_("Best server: {server}"), server=best_server['rwg'])
         return best_server
 
     @logger.catch
@@ -86,11 +86,10 @@ class Zoom:
     @logger.catch
     async def _websocket_connect(connection):
         if connection is None:
-            raise ZoomError("Connection blocked")
+            raise ZoomError("Connection rejected by Zoom")
+
         websocket_url = str(connection.url).replace("https", "wss")
-        logger.debug(
-            "WebSocket connection url: {websocket_url}", websocket_url=websocket_url
-        )
+        logger.debug("WebSocket connection url: {websocket_url}", websocket_url=websocket_url)
         return open_websocket_url(websocket_url)
 
     @staticmethod
