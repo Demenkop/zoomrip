@@ -1,0 +1,68 @@
+# Copyright (C) 2020 Никита Ларин
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: v1.0.0\n"
+"POT-Creation-Date: 2020-04-02 00:34+0400\n"
+"PO-Revision-Date: 2020-04-02 11:40+0400\n"
+"Last-Translator: Daniil Nikolaev <dannevergame@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: main.py:41
+msgid "Joining meeting {meeting_id} with password {password}"
+msgstr "Joining meeting {meeting_id} with password {password}"
+
+#: main.py:47
+msgid "{username}: Started sending messages..."
+msgstr "{username}: Started sending messages..."
+
+#: main.py:56
+msgid "Server: wrong password, ignoring..."
+msgstr "Server: wrong password, ignoring..."
+
+#: main.py:59
+#: main.py:63
+msgid "Server closed connection, trying again..."
+msgstr "Server closed connection, trying again..."
+
+#: main.py:70
+msgid "Enter zoom meeting link: "
+msgstr "Enter zoom meeting link: "
+
+#: main.py:72
+msgid "Enter a meeting password, if there is any and it's not specified in the url (or press Enter): "
+msgstr "Enter a meeting password, if there is any and it's not specified in the url (or press Enter): "
+
+#: main.py:76
+msgid "Enter a name that bots will use (English only): "
+msgstr "Enter a name that bots will use (English only): "
+
+#: main.py:79
+msgid "Enter the amount of bots: "
+msgstr "Enter the amount of bots: "
+
+#: main.py:85
+msgid "Incorrect link!"
+msgstr "Incorrect link!"
+
+#: zoom.py:26
+msgid "Joining a meeting"
+msgstr "Joining a meeting"
+
+#: zoom.py:33
+msgid "Wrong password"
+msgstr "Wrong password"
+
+#: zoom.py:54
+msgid "The meeting has not started"
+msgstr "The meeting has not started"
+
+#: zoom.py:65
+msgid "Best server: {server}"
+msgstr "Best server: {server}"
+
