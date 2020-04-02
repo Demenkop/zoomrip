@@ -1,3 +1,6 @@
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![GitHub contributors](https://img.shields.io/github/contributors/crinny/zoomrip.svg)](https://GitHub.com/crinny/zoomrip/graphs/contributors/) [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+
+
 [English](README_ENG.md) | [Русский](README.md) | [Український](README_UKR.md)
 
 
