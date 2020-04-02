@@ -3,7 +3,7 @@
 
 ------
 
-<h1 align="center">zoomrip</h1>
+<h1 align="center">Zoomrip</h1>
 
 zoomrip - бесплатная утилита с открытым исходным кодом для отказа в обслуживании видео-конференций [Zoom](http://zoom.us/ "Zoom")
 
