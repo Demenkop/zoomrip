@@ -1,4 +1,16 @@
+[English](README_ENG.md) | [Русский](README.md) | [Українська](README_UKR.md)
+
+
+------
+
 <h1 align="center">zoomrip</h1>
+
+<p align="center">
+    <img alt="Made with Python" src="https://img.shields.io/badge/Made%20with-Python-%23FFD242?logo=python&logoColor=white"> 
+    <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
+    <img alt="[License: MPL 2.0" src="https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg">
+</p>
+
 
 zoomrip - бесплатная утилита с открытым исходным кодом для отказа в обслуживании видео-конференций [Zoom](http://zoom.us/ "Zoom")
 
