@@ -1,3 +1,8 @@
+[English](README_ENG.md) | [Русский](README.md) | [Український](README_UKR.md)
+
+
+------
+
 <h1 align="center">zoomrip</h1>
 
 zoomrip - бесплатная утилита с открытым исходным кодом для отказа в обслуживании видео-конференций [Zoom](http://zoom.us/ "Zoom")
