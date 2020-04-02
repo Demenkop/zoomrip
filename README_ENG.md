@@ -12,7 +12,7 @@
 </p>
 
 
-zoomrip is open source freeware for [Zoom](http://zoom.us/ "Zoom") meetings denial of service.
+zoomrip is open-source freeware for [Zoom](http://zoom.us/ "Zoom") meetings denial of service.
 
 ### What is this for?
 Let's say, you have online lessons in Zoom, but you don't want to participate in them. This is what zoomrip is for. It will perform some actions to disconnect the clients in the meeting: creating many accounts and sending chat messages. Most of the devices will disconnect after this "DoS attack".
@@ -27,7 +27,7 @@ Let's say, you have online lessons in Zoom, but you don't want to participate in
 
     <h3>On Windows</h3>
 
-    Download the installer from [official site](https://www.python.org/downloads/) and launch it. Make sure you tick ![Add Python to PATH](https://user-images.githubusercontent.com/42045258/69171091-557d2780-0b0c-11ea-8adf-7f819357f041.png) when installing.
+    Download the installer from [the official site](https://www.python.org/downloads/) and launch it. Make sure you tick ![Add Python to PATH](https://user-images.githubusercontent.com/42045258/69171091-557d2780-0b0c-11ea-8adf-7f819357f041.png) when installing.
     
     <h3>On Linux</h3>
 
@@ -42,19 +42,19 @@ pip3 install -r requirements.txt
 ```
 <h1 align="center">🚩 Launching</h1>
 
-Easy peasy! Just enter `python3 main.py`, while in the clonned repository directory.
+Easy peasy! Just enter `python3 main.py`, while in the cloned repository directory.
 
 <h1 align="center">Updating</h1>
 
-Enter the following command in command line or terminal:
+Enter the following command in the command line or terminal:
 ```sh
 git pull
 ```
 
-<h1 align="center">📹 Showcase (russian)</h1>
+<h1 align="center">📹 Showcase (in Russian)</h1>
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=nHr9_qiFVcM" target="_blank"><img src="http://img.youtube.com/vi/nHr9_qiFVcM/0.jpg" 
 alt="nHr9_qiFVcM" width="384" height="216" border="10" /></a>
 
 ------------
 
-<p align="center">Telegram chat (russian): <a href="https://t.me/zoomraid">https://t.me/zoomraid</a></p>
+<p align="center">Telegram chat (in Russian): <a href="https://t.me/zoomraid">https://t.me/zoomraid</a></p>
