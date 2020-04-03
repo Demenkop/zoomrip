@@ -3,3 +3,4 @@ trio
 trio-websocket
 httpx
 loguru
+pysocks

