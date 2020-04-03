@@ -73,9 +73,15 @@ async def spam(meeting_id: int, password: str, username: str, message: str, url:
 async def main():
     proxy = input(_("Enter SOCKS5 proxy server (if you need one, ex. '127.0.0.1:9050'): ")).split(":")
 
-    if len(proxy) > 0:
+    if len(proxy) > 1:
+        pr_type = input(_("Enter a type of proxy ('4' - for SOCKS4, 'http' - for HTTP). Leave blank for SOCKS5: "))
         host, port = proxy
-        socks.set_default_proxy(socks.SOCKS5, host, int(port))
+        if type == 'http':
+            socks.set_default_proxy(socks.HTTP, host, int(port))
+        elif type == '4':
+            socks.set_default_proxy(socks.SOCKS4, host, int(port))
+        else:
+            socks.set_default_proxy(socks.SOCKS5, host, int(port))
         socket.socket = socks.socksocket
 
     url = input(_("Enter zoom meeting link: ")).strip()
